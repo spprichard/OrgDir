@@ -2,6 +2,7 @@ protocol Domain {
     var tasks : [Task] {get set}
     var name : String {get set}
     var timeSpent : Int {get}
+    var averageTimeSpent : Float {get}
 }
 
 protocol Task {
@@ -22,9 +23,36 @@ struct Education : Domain{
         return sum
     }
     
+    var averageTimeSpent: Float{
+        return Float(timeSpent) / Float(tasks.count)
+    }
+    
     init(name: String = "Education", tasks: [Task] = []) {
         self.name = name
         self.tasks = tasks
+    }
+}
+
+struct Exercise : Domain {
+    var name: String
+    var tasks: [Task]
+    var totalCaloriesBurned: Int
+    var timeSpent: Int {
+        var sum = 0
+        for task in tasks{
+            sum += task.duration
+        }
+        return sum
+    }
+    var averageTimeSpent: Float{
+        return Float(timeSpent) / Float(tasks.count)
+    }
+    
+    
+    init(name: String = "Exercise", tasks: [Task] = [], totalCals: Int = 0) {
+        self.name = name
+        self.tasks = tasks
+        self.totalCaloriesBurned = totalCals
     }
 }
 
@@ -70,7 +98,13 @@ masters.timeSpent
 var party = GeneralTask(name: "Party", duration: 10000)
 var underGrad = Education(name: "Under Grad", tasks: [study, hw, party])
 underGrad.name
-underGrad.tasks
 underGrad.timeSpent
+
+var legWorkout = GeneralTask(name: "Leg Workout", duration: 60)
+var armWorkout = GeneralTask(name: "Leg Workout", duration: 30)
+var workout = Exercise(tasks: [legWorkout, armWorkout], totalCals: 250)
+workout.name
+workout.averageTimeSpent
+workout.totalCaloriesBurned
 
 
